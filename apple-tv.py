@@ -43,8 +43,8 @@ async def main():
 
     if len(sys.argv) == 1:
         config = {
-            "device_name": os.getenv("APPLETV_DEVICE_NAME"),
-            "airplay_creds": os.getenv("APPLETV_AIRPLAY_CREDS"),
+            "device_name": os.getenv("APPLE_TV_DEVICE_NAME"),
+            "airplay_creds": os.getenv("APPLE_TV_AIRPLAY_CREDS"),
         }
     else:
         config = json.loads(sys.argv[1])

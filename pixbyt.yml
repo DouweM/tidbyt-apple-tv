@@ -1,0 +1,31 @@
+jobs:
+- name: apple-tv
+  tasks:
+  - tap-pixlet--apple-tv target-tidbyt
+- name: apple-tv--webp
+  tasks:
+  - tap-pixlet--apple-tv target-webp
+
+plugins:
+  extractors:
+  - name: tap-pixlet--apple-tv
+    inherit_from: tap-pixlet
+    pip_url: git+https://github.com/DouweM/tap-pixlet.git -r apps/apple-tv/requirements.txt --compile --no-cache-dir
+    config:
+      path: apps/apple-tv
+      app_config:
+        device_name: $APPLE_TV_DEVICE_NAME # Device Name. Acquire using `meltano invoke tap-pixlet--apple-tv:scan`. Example: 'Bedroom Apple TV'
+        airplay_creds: $APPLE_TV_AIRPLAY_CREDS # AirPlay Creds. Acquire using `meltano invoke tap-pixlet--apple-tv:pair`
+    commands:
+      scan:
+        executable: atvremote
+        args: scan
+      pair:
+        executable: atvremote
+        args: --name $APPLE_TV_DEVICE_NAME --protocol airplay pair
+      atvremote:
+        executable: atvremote
+        args: --name $APPLE_TV_DEVICE_NAME --airplay-credentials $APPLE_TV_AIRPLAY_CREDS
+      metadata:
+        executable: $MELTANO_PROJECT_ROOT/apps/apple-tv/apple-tv.py
+        args: ""
